@@ -15,7 +15,6 @@ const passport = require('./lib/passport');
 
 const app = express();
 
-app.use(passport.initialize());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(session({
@@ -23,6 +22,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(log('tiny'));
 
 app.engine('hbs', hbs());
