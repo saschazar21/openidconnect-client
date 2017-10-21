@@ -1,7 +1,7 @@
 {
-  "name": "openidconnect",
+  "name": "openidconnect-client",
   "version": "1.0.0",
-  "description": "A test client for OpenID Connect Servers",
+  "description": "A test client for OpenID Connect providers",
   "main": "index.js",
   "author": "Sascha Zarhuber",
   "license": "MIT",
@@ -12,12 +12,10 @@
     "dotenv": "^4.0.0",
     "express": "^4.16.1",
     "express-handlebars": "^3.0.0",
-    "express-hbs": "^1.0.4",
     "express-session": "^1.15.6",
     "morgan": "^1.9.0",
     "openid-client": "^1.16.0",
-    "passport": "^0.4.0",
-    "yargs": "^9.0.1"
+    "passport": "^0.4.0"
   },
   "scripts": {
     "start": "node index.js"

@@ -1,3 +1,6 @@
+/**
+ * Require necessary modules
+ */
 const argv = require('yargs').argv;
 const bodyParser = require('body-parser');
 const express = require('express');
@@ -7,14 +10,30 @@ const log = require('morgan');
 const path = require('path');
 const session = require('express-session');
 
-require('dotenv').config({
-  path: path.resolve(__dirname, '.env'),
-});
+/**
+ * Parse environment variables from the .env file
+ */
+try {
+  require('dotenv').config({
+    path: path.resolve(__dirname, '.env'),
+  });
+} catch (e) {
+  debug(`Something went wrong while parsing the .env file: ${e.message || e}\nBe sure to have all necessary environment variables set!`);
+}
 
+/**
+ * Require passport config including OpenID Connect Strategy
+ */
 const passport = require('./lib/passport');
 
+/**
+ * Instantiate Express.js server
+ */
 const app = express();
 
+/**
+ * Express.js middlewares
+ */
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(session({
@@ -25,18 +44,23 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(log('tiny'));
-
 app.engine('hbs', hbs());
 app.set('view engine', 'hbs');
 
+/**
+ * Routes for OpenID Connect service
+ */
 app.get('/auth/callback', passport.authenticate('oidc', {
   failureRedirect: '/',
-  successRedirect: '/success',
+  successRedirect: '/profile',
 }));
 app.get('/auth', passport.authenticate('oidc'));
-app.get('/success', passport.isAuthenticated, (req, res) => res.json(req.user));
+app.get('/profile', passport.isAuthenticated, (req, res) => res.render('profile', req.user));
 app.get('/', (req, res) => res.render('login'));
 
+/**
+ * Listen for connections on given PORT variable, or use port 3000 as fallback
+ */
 app.listen(process.env.PORT || 3000, () => {
   debug(`App listening on port ${process.env.PORT || 3000}`);
 });
