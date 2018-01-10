@@ -5,7 +5,9 @@ const argv = require('yargs').argv;
 const bodyParser = require('body-parser');
 const express = require('express');
 const debug = require('debug')('openidconnect');
+const fs = require('fs');
 const hbs = require('express-handlebars');
+const https = require('https');
 const log = require('morgan');
 const path = require('path');
 const session = require('express-session');
@@ -61,7 +63,16 @@ app.get('/', (req, res) => res.render('login'));
 /**
  * Listen for connections on given PORT variable, or use port 3000 as fallback
  */
-app.listen(process.env.PORT || 3000, () => {
-  debug(`App listening on port ${process.env.PORT || 3000}`);
-});
+if (fs.existsSync(process.env.KEY || './https.key') && fs.existsSync(process.env.CERT || './https.crt')) {
+  https.createServer({
+    key: fs.readFileSync(process.env.KEY || './https.key'),
+    cert: fs.readFileSync(process.env.CERT || './https.crt'),
+  }, app).listen(process.env.PORT || 3000, () => {
+    debug(`HTTPS enabled, listening on port ${process.env.PORT || 3000}`);
+  });
+} else {
+  app.listen(process.env.PORT || 3000, () => {
+    debug(`App listening on port ${process.env.PORT || 3000}`);
+  });
+}
 

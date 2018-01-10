@@ -19,7 +19,26 @@ Either set them by copying the `.env.sample` file to `.env` and appending values
 ```bash
 $ ISSUER=... AUTH_URL=... CERT_URL=... (etc...) npm start
 ```
+### Sample configuration
+
+A sample configuration of the necessary URLs in your `.env` file would look like the following:
+
+```bash
+ISSUER=http://localhost:3000
+AUTH_URL=http://localhost:3000/auth
+CERT_URL=http://localhost:3000/certs
+TOKEN_URL=http://localhost:3000/token
+CALLBACK_URL=https://home.dev:3001/auth/callback
+USER_URL=http://localhost:3000/me
+```
+
+All but `CALLBACK_URL` of the above URLs are affecting the client's requests to the provider, therefore please check your current provider configuration. The `CALLBACK_URL` must be equal to your client's settings at the provider and point to a route in your client configuration (the URL the provider will redirect authenticated requests to).
+
 **CAUTION:** Never commit your secret keys in your git repo!
+
+### HTTPS support
+
+If you have a valid `key` & `cert` file path set in your `.env` file, the application automatically boots up an HTTPS-enabled server. Using this configuration, you'll have to explicitly use the `https://` prefix, as there is no automatic redirect from `http://` while the server is running.
 
 ## DEBUG
 Debugging may be turned on by setting the `DEBUG` environment variable to `openidconnect`:
@@ -41,4 +60,5 @@ Contributors welcome. While this project might just be here for testing you are 
 MIT
 
 ## Version history
+* **v1.1.0** Enhanced the setup to also support HTTPS when `key` and `cert` are present
 * **v1.0.0** Initial version
