@@ -60,5 +60,6 @@ Contributors welcome. While this project might just be here for testing you are 
 MIT
 
 ## Version history
+* **v1.2.0** Enhanced environment variables to support different response types out of the box
 * **v1.1.0** Enhanced the setup to also support HTTPS when `key` and `cert` are present
 * **v1.0.0** Initial version

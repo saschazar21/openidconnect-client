@@ -63,7 +63,7 @@ app.get('/', (req, res) => res.render('login'));
 /**
  * Listen for connections on given PORT variable, or use port 3000 as fallback
  */
-if (fs.existsSync(process.env.KEY || './https.key') && fs.existsSync(process.env.CERT || './https.crt')) {
+if (process.env.FORCE_SSL && fs.existsSync(process.env.KEY || './https.key') && fs.existsSync(process.env.CERT || './https.crt')) {
   https.createServer({
     key: fs.readFileSync(process.env.KEY || './https.key'),
     cert: fs.readFileSync(process.env.CERT || './https.crt'),
