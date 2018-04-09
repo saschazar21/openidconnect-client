@@ -47,6 +47,9 @@ $ DEBUG=openidconnect npm start
 ```
 Another possibility would be to add this combination to your `.env` file to automatically load it during testing.
 
+## Known issues
+* When using the implicit flow as authentication process and the OP returns the token data using the `fragment` response mode, an endless loop of requests between the callback URLs might occur. This issue has been addressed [here](https://github.com/panva/node-openid-client/issues/39#issuecomment-313169999). Please make sure to use the `form_post` response mode (uncomment in `.env.sample`).
+
 ## Contribution
 Contributors welcome. While this project might just be here for testing you are free to fork it and create pull requests, if you fixed a bug or think an enhancement should be part of this project.
 
@@ -60,6 +63,7 @@ Contributors welcome. While this project might just be here for testing you are 
 MIT
 
 ## Version history
+* **v1.3.0** HTTP request logs are more verbose now, discovered `fragment` response mode issue, added RESPONSE_MODE env & POST route config
 * **v1.2.0** Enhanced environment variables to support different response types out of the box
 * **v1.1.0** Enhanced the setup to also support HTTPS when `key` and `cert` are present
 * **v1.0.0** Initial version

@@ -45,7 +45,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(log('tiny'));
+app.use(log('common'));
 app.engine('hbs', hbs());
 app.set('view engine', 'hbs');
 
@@ -56,7 +56,14 @@ app.get('/auth/callback', passport.authenticate('oidc', {
   failureRedirect: '/',
   successRedirect: '/profile',
 }));
-app.get('/auth', passport.authenticate('oidc'));
+app.post('/auth/callback', passport.authenticate('oidc', {
+  failureRedirect: '/',
+  successRedirect: '/profile',
+}));
+app.get('/auth', passport.authenticate('oidc', {
+  failureRedirect: '/',
+  successRedirect: '/profile',
+}));
 app.get('/profile', passport.isAuthenticated, (req, res) => res.render('profile', req.user));
 app.get('/', (req, res) => res.render('login'));
 
