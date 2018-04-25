@@ -52,7 +52,13 @@ app.set('view engine', 'hbs');
 /**
  * Routes for OpenID Connect service
  */
-app.get('/auth/callback', passport.authenticate('oidc', {
+app.get('/auth/callback', (req, res, next) => {
+  if (process.env.RESPONSE_TYPE && process.env.RESPONSE_TYPE.includes('token')) { // implicit but form_post is not used
+    res.render('repost');
+  } else {
+    next();
+  }
+}, passport.authenticate('oidc', {
   failureRedirect: '/',
   successRedirect: '/profile',
 }));
@@ -82,4 +88,3 @@ if (process.env.FORCE_SSL && fs.existsSync(process.env.KEY || './https.key') && 
     debug(`App listening on port ${process.env.PORT || 3000}`);
   });
 }
-
